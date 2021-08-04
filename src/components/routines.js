@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+export const FITNESS_URL = "https://fitnesstrac-kr.herokuapp.com/api";
 
 import {
   Paper,

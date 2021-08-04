@@ -203,7 +203,7 @@ export async function myRoutinesFetch(username, myToken) {
 export async function saveRoutine(routineName, routineGoal, id) {
   const myToken = getCurrentUser();
 
-  fetch(`${process.env.FITNESS_URL}routines/${id}`, {
+  fetch(`${FITNESS_URL}routines/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
