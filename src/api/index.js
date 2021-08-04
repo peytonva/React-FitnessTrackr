@@ -4,51 +4,81 @@ import { storeCurrentUser, getCurrentUser } from "../auth";
 
 export async function getRoutines() {
   try {
-    const { data } = await axios.get(
-      `${process.env.FITNESS_URL}routines`
-    );
+    const { data } = await axios.get(`${FITNESS_URL}/routines`);
     return data;
   } catch (error) {
     throw error;
-}
+  }
 }
 
 export async function getActivities() {
   try {
-    const { data } = await axios.get(
-      `${process.env.FITNESS_URL}activities`
-    );
+    const { data } = await axios.get(`${FITNESS_URL}/activities`);
     return data;
   } catch (error) {
     throw error;
-}
-}
+  }
+};
 
-export async function registerUser(username, password) {
-  return await axios
-    .post(`${process.env.FITNESS_URL}users/register`, {
+export function registerUser(username, password) {
+  console.log(username, password);
+  return axios
+    .post(`${FITNESS_URL}/users/register`, {
       username,
       password,
     })
-    .then(({ data: { token } }) => {
-      if (token) {
-        storeCurrentUser();
-        window.location.href = `${window.location.origin}/homepage`;
-      } else {
-        console.error("Error");
-      }
+    .then((data) => {
+      storeCurrentUser(data.data.token);
+      window.location.href = `${window.location.origin}/home`;
     })
     .catch((error) => {
       console.log(error);
-
-      console.error("Error");
     });
 }
 
+// export async function registerUser(username, password) {
+
+//   try {
+//     const response = await fetch(`${FITNESS_URL}/users/register`, {
+//       method: "POST",
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({
+//         username: username,
+//         password: password
+//       })
+//     })
+//     const {token} = await response.json()
+//     localStorage.setItem("token", JSON.stringify(token))
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
+
+// export async function loginUser(username, password) {
+
+//   try {
+//     const response = await fetch(`${FITNESS_URL}/users/login`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json"
+//       },
+//         body: JSON.stringify({
+//           username: username,
+//           password: password
+//         })
+//     })
+//     const { token } = await response.json()
+//     localStorage.setItem("token", JSON.stringify(token))
+//   } catch (error) {
+//       console.log(error)
+//   }
+// }
 
 export async function loginUser(username, password) {
   return await axios
-    .post(`${process.env.FITNESS_URL}users/login`, {
+    .post(`${FITNESS_URL}/users/login`, {
       username,
       password,
     })
@@ -66,26 +96,28 @@ export async function loginUser(username, password) {
       console.error("Error");
     });
 }
+
+// const fetchToken = () => {
+//   const token = JSON.parse(localStorage.getItem("token"));
+//   return token ? token : ''
+// };
 
 export async function createRoutine(name, goal) {
   try {
     const myToken = getCurrentUser();
 
-    const response = await fetch(
-      `${process.env.FITNESS_URL}routines`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${myToken}`,
-        },
-        body: JSON.stringify({
-          name,
-          goal,
-          isPublic: true,
-        }),
-      }
-    );
+    const response = await fetch(`${FITNESS_URL}/routines`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${myToken}`,
+      },
+      body: JSON.stringify({
+        name,
+        goal,
+        isPublic: true,
+      }),
+    });
 
     const data = await response.json();
     return data;
@@ -98,20 +130,17 @@ export async function createActivity(name, description) {
   try {
     const myToken = JSON.parse(localStorage.getItem("token"));
 
-    const response = await fetch(
-      `${process.env.FITNESS_URL}activities`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${myToken}`,
-        },
-        body: JSON.stringify({
-          name,
-          description,
-        }),
-      }
-    );
+    const response = await fetch(`${FITNESS_URL}/activities`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${myToken}`,
+      },
+      body: JSON.stringify({
+        name,
+        description,
+      }),
+    });
 
     const data = await response.json();
     return data;
@@ -123,7 +152,7 @@ export async function createActivity(name, description) {
 export async function deleteRoutine(id) {
   const myToken = getCurrentUser();
 
-  fetch(`${process.env.FITNESS_URL}routines/${id}`, {
+  fetch(`${FITNESS_URL}/routines/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -140,7 +169,7 @@ export async function deleteRoutine(id) {
 export async function myUsernameFetch(myToken) {
   try {
     return axios
-      .get(`${process.env.FITNESS_URL}users/me`, {
+      .get(`${FITNESS_URL}/users/me`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${myToken}`,
@@ -154,19 +183,15 @@ export async function myUsernameFetch(myToken) {
   }
 }
 
-
 export async function myRoutinesFetch(username, myToken) {
   try {
     return axios
-      .get(
-        `${process.env.FITNESS_URL}users/${username}/routines`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${myToken}`,
-          },
-        }
-      )
+      .get(`${FITNESS_URL}/users/${username}/routines`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${myToken}`,
+        },
+      })
       .then(({ data }) => {
         return data;
       });
@@ -175,11 +200,10 @@ export async function myRoutinesFetch(username, myToken) {
   }
 }
 
-
 export async function saveRoutine(routineName, routineGoal, id) {
   const myToken = getCurrentUser();
 
-  fetch(`${process.env.REACT_APP_FITNESS_TRACKR_API_URL}routines/${id}`, {
+  fetch(`${process.env.FITNESS_URL}routines/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -200,7 +224,7 @@ export async function saveRoutine(routineName, routineGoal, id) {
 export async function routineActivities(id) {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_FITNESS_TRACKR_API_URL}activities/:activityId/routines`,
+      `${FITNESS_URL}/activities/:activityId/routines`,
       {
         method: "GET",
         headers: {

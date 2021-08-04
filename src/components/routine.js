@@ -40,7 +40,7 @@ const onEdit = () => {
 
 const onSave = (id) => {
     setEditMode(false);
-    fetch(`${process.env.REACT_APP_FITNESS_TRACKR_API_URL}routines/${id}`, {
+    fetch(`${process.env.FITNESS_URL}routines/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const onSave = (id) => {
 
 const onDelete = (id) => {
     onRemoveRoutine();
-    fetch(`${process.env.REACT_APP_FITNESS_TRACKR_API_URL}routines/${id}`, {
+    fetch(`${process.env.FITNESS_URL}routines/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

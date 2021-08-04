@@ -65,7 +65,7 @@ return (
         component='h2'
         align='center'
         gutterBottom>
-        Hello There- Welcome to Fitness Trackr!
+        Welcome to Fitness Trackr
         </Typography>
         <Typography
         className={classes.subTitle}
@@ -74,7 +74,7 @@ return (
         component='h2'
         align='center'
         gutterBottom>
-         Please create your account.
+         Please create an account
         </Typography>
         <form
         noValidate
@@ -88,7 +88,7 @@ return (
             label='Required'
             variant='outlined'
             color='#F9DDD2'
-            defaultValue='Username'
+            defaultValue='Enter your username'
             onInput={(event) => {
         setUsername(event.target.value);
  }}
@@ -119,4 +119,3 @@ return (
 };
   
 export default Register;
-  

@@ -11,17 +11,31 @@ import {
   TableBody,
 } from "@material-ui/core";
 
+// const Routines = () => {
+//   const [routines, setRoutines] = useState();
+
+//   useEffect(() => {
+//     axios
+//       .get(`${process.env.FITNESS_URL}/routines`)
+//       .then(({ data }) => {
+//         if (data.length) {
+//           setRoutines(data);
+//         }
+//       });
+//   }, []);
 const Routines = () => {
   const [routines, setRoutines] = useState();
-
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_FITNESS_TRACKR_API_URL}routines`)
-      .then(({ data }) => {
-        if (data.length) {
-          setRoutines(data);
-        }
-      });
+    async function fetchRoutines() {
+      try {
+        axios
+          .get(`${FITNESS_URL}/routines`)
+          .then(({ data }) => setRoutines(data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchRoutines();
   }, []);
   return (
     <>

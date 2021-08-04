@@ -49,7 +49,7 @@ const Home = () => {
             component='h2'
             align='center'
             gutterBottom>
-            Hello There- Welcome to Fitness Trackr!
+            Welcome to Fitness Trackr
           </Typography>
           <Typography
             className={classes.subTitle}
@@ -58,7 +58,7 @@ const Home = () => {
             component='h2'
             align='center'
             gutterBottom>
-            Please login to your account or register to start tracking!
+            Please login or register to start tracking
           </Typography>
         </Container>
       </div>

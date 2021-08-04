@@ -7,24 +7,44 @@ import {
   } from "@material-ui/core";
   import axios from "axios";
   import { useState } from "react";
-  //import { loginUser } from "../api";
   import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
   
   const Login = () => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [errorMessage, setErrorMessage] = useState("");
+   const FITNESS_URL = "https://fitnesstrac-kr.herokuapp.com/api"
+
+    // const loginUser= async() => {
+
+    //   try {
+    //     const response = await fetch(`${FITNESS_URL}/users/login`, {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json"
+    //       },
+    //         body: JSON.stringify({
+    //           username: username,
+    //           password: password
+    //         })  
+    //     })
+    //     const { token } = await response.json()
+    //     localStorage.setItem("token", JSON.stringify(token))
+    //   } catch (error) {
+    //       console.log(error)
+    //   }
+    // }
   
     const loginUser = async () => {
       return await axios
-        .post(`${process.env.REACT_APP_FITNESS_TRACKR_API_URL}users/login`, {
+        .post(`${FITNESS_URL}/users/login`, {
           username,
           password,
         })
         .then(({ data: { token } }) => {
           if (token) {
             localStorage.setItem("token", JSON.stringify(token));
-            window.location.href = `${window.location.origin}/homepage`;
+            window.location.href = `${window.location.origin}/home`;
           } else {
             setErrorMessage("Incorrect User and/or Password");
             // show some error message
@@ -36,6 +56,7 @@ import {
           setErrorMessage("Incorrect User and/or Password");
         });
     };
+    
     const onFormSubmit = (event) => {
       event.preventDefault();
       loginUser(username, password);
@@ -88,7 +109,7 @@ import {
             component='h2'
             align='center'
             gutterBottom>
-            Hello There- Welcome to Fitness Trackr!
+            Welcome to Fitness Trackr
           </Typography>
           <Typography
             className={classes.subTitle}
@@ -97,7 +118,7 @@ import {
             component='h2'
             align='center'
             gutterBottom>
-            Please log in to your account.
+            Please log in.
           </Typography>
           {errorMessage}
           <form
